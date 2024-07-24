@@ -30,19 +30,19 @@ void loop() {
 
   for(int i = 0; i < 100; i++) { 
     digitalWrite(step_pin, HIGH);
-    delayMicroseconds(10);
+    delayMicroseconds(20);
     digitalWrite(step_pin, LOW);
-    delay(10);
+    delay(20);
   }
-  delay(200);
+  delay(500);
   digitalWrite(dir_pin, HIGH);
 
   for(int i = 0; i < 100; i++) { 
     digitalWrite(step_pin, HIGH);
-    delayMicroseconds(10);
+    delayMicroseconds(20);
     //delay(1000);
     digitalWrite(step_pin, LOW);
-    delay(10);
+    delay(20);
     //delay(1000);
   }
 
