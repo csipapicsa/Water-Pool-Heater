@@ -1,6 +1,7 @@
 #include "TempSensorHeaders.h"
 #include "WaterLevelSensorHeaders.h"
 #include "PhotoSensor.h"
+#include "WaterPump.h"
 
 void setup() {
   // put your setup code here, to run once:
@@ -16,7 +17,8 @@ void loop() {
   Serial.println(getWaterLevel());
   Serial.println("Get Photo Sensor Voltage");
   Serial.println(getSolarvoltage());
-
-
-  delay(1000);
+  switchPump(1);
+  delay(500);
+  switchPump(0);
+  delay(500);
 }
