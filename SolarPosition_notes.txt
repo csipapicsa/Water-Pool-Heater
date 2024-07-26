@@ -1,0 +1,3 @@
+https://github.com/PaulStoffregen/Time (Using the Arduino Library Manager, install "Time by Michael Margolis".) 
+
+https://github.com/KenWillmott/SolarPosition. 
