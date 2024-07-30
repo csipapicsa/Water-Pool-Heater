@@ -32,6 +32,7 @@ void loop() {
 	else if (level > upperThreshold) {
 		Serial.println("Water Level: High");
 	}
+  Serial.print(readSensor());
 	delay(1000);
 }
 //This is a function used to get the reading

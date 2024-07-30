@@ -42,3 +42,8 @@ double getWaterLevel() {
     }
     return -1; // In case none of the above conditions are met
 }
+
+int getWaterLevelRaw() {
+    int level = readSensor();
+    return level;
+}
