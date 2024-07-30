@@ -5,18 +5,18 @@
 
 void setupWaterLevelSensor();
 double getWaterLevel();
-int readSensor();
+int readWLSensor();
 
 int val = 0;
 int lowerThreshold = 500;
 int upperThreshold = 570;
 
-void setupWaterLevelSensor() {
+void initWaterLevelSensor() {
     pinMode(sensorPower, OUTPUT);
     digitalWrite(sensorPower, LOW);
 }
 
-int readSensor() {
+int readWLSensor() {
     digitalWrite(sensorPower, HIGH);    // Turn the sensor ON
     delay(10);                          // Wait 10 milliseconds
     val = analogRead(sensorPin);        // Read the analog value from sensor
@@ -25,7 +25,7 @@ int readSensor() {
 }
 
 double getWaterLevel() {
-    int level = readSensor();
+    int level = readWLSensor();
 
     if (level == 0) {
         Serial.println("Water Level: Empty");
@@ -44,6 +44,6 @@ double getWaterLevel() {
 }
 
 int getWaterLevelRaw() {
-    int level = readSensor();
+    int level = readWLSensor();
     return level;
 }

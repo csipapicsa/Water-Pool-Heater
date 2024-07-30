@@ -16,7 +16,8 @@ void setup() {
   Serial.begin(9600);
   SetSettingsFromEeprom(settings); 
   InitRTCSolarPosition();
-  sensors.begin();
+  sensors.begin(); // what is this? 
+  initWaterLevelSensor(); // init water level sensor 
 }
 
 void loop() {

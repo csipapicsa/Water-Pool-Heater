@@ -11,7 +11,7 @@ int val = 0;
 int lowerThreshold = 500;
 int upperThreshold = 570;
 
-void setupWaterLevelSensor() {
+void initWaterLevelSensor() {
     pinMode(sensorPower, OUTPUT);
     digitalWrite(sensorPower, LOW);
 }
