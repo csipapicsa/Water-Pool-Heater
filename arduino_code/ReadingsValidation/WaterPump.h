@@ -1,20 +1,29 @@
 #define waterPumpSwitchPin A3
 
-void setupWaterPump();
-void switchPump(int status);
+void initWaterPump();
+void waterPumpOn(int duration);
+void waterPumpOff(int duration);
 
-void setupWaterPump() {
+void initWaterPump() {
     pinMode(waterPumpSwitchPin, OUTPUT);
 }
 
-void switchPump(int status)
-{
-  if (status == 1) {
-    digitalWrite(waterPumpSwitchPin, HIGH);
-  }
-  else if (status == 0)
-  {
-    digitalWrite(waterPumpSwitchPin, LOW);
-  }
-    
+void waterPumpOn(int duration) {
+    if (duration > 1000) {
+        return;
+    }
+    else {
+        digitalWrite(A3, HIGH);
+        delay(duration);
+    }
+}
+
+void waterPumpOff(int duration) {
+    if (duration > 1000) {
+        return;
+    }
+    else {
+        digitalWrite(A3, LOW);
+        delay(duration);
+    }
 }

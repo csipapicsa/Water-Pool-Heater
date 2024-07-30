@@ -10,6 +10,7 @@ void setup() {
   Serial.begin(9600);
   initWaterLevelSensor();
   initStepperMotors();
+  initWaterPump();
 
 }
 
@@ -27,5 +28,8 @@ void loop() {
   stepperMove("clockwise");
   delay(1000);
   stepperMove("counterclockwise");
+  waterPumpOn(1000);
+  waterPumpOff(1000);
+  
 
 }

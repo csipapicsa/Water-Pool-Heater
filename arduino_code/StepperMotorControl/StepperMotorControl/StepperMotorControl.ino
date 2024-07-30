@@ -1,16 +1,4 @@
 #include <Stepper.h>
-/*
- Stepper Motor Control -  revolution
-
- This program drives a unipolar or bipolar stepper motor.
- The motor is attached to digital pins 8 - 11 of the Arduino.
-
- The motor should revolve one revolution in one direction, then
- one revolution in the other direction.
-
- */
-//Stepper myStepper(stepsPerRevolution,10, 11);
-
 
 const int step_pin = 10;
 const int dir_pin = 11;
