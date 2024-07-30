@@ -14,13 +14,13 @@ struct Settings settings;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  SetSettingsFromEeprom(&settings); 
+  SetSettingsFromEeprom(settings); 
   InitRTCSolarPosition();
   sensors.begin();
 }
 
 void loop() {
-  UpdateConfigFromSerial(&settings);
+  UpdateConfigFromSerial(settings);
   
   Serial.println("------");
   Serial.println("Celsius temperature: ");
@@ -33,7 +33,7 @@ void loop() {
   sunLevel = getSolarvoltage(); 
   Serial.println(sunLevel);
   
-  if (waterLevel > waterLevelMax) || (temp > tempTarget) || (sunLevel > sunThreshold) {
+  if (waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel > settings.sunThreshold) {
     switchPump(0);
   } else {
     switchPump(1);
