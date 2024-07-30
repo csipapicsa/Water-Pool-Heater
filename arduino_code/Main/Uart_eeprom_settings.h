@@ -47,11 +47,11 @@ void SetSettingsFromEeprom(Settings& settings) {
         if (data_decoder(currentMessage, settings)) {
           Serial.println("Decoded settings:");
           Serial.print("Temp Target: ");
-          Serial.println(settings->tempTarget);
+          Serial.println(settings.tempTarget);
           Serial.print("Sun Threshold: ");
-          Serial.println(settings->sunThreshold);
+          Serial.println(settings.sunThreshold);
           Serial.print("Water Level: ");
-          Serial.println(settings->waterLevelThreshold);
+          Serial.println(settings.waterLevelThreshold);
         } else {
           Serial.println("Couldn't decode: " + currentMessage);
         }
@@ -68,11 +68,11 @@ void SetSettingsFromEeprom(Settings& settings) {
     if (data_decoder(currentMessage, settings)) {
       Serial.println("Decoded settings:");
       Serial.print("Temp Target: ");
-      Serial.println(settings->tempTarget);
+      Serial.println(settings.tempTarget);
       Serial.print("Sun Threshold: ");
-      Serial.println(settings->sunThreshold);
+      Serial.println(settings.sunThreshold);
       Serial.print("Water Level: ");
-      Serial.println(settings->waterLevelThreshold);
+      Serial.println(settings.waterLevelThreshold);
     } else {
       Serial.println("Couldn't decode: " + currentMessage);
     }
@@ -98,11 +98,11 @@ void UpdateConfigFromSerial(Settings& settings) {
 
     if (data_decoder(message, settings)) {
         Serial.print("Temp Target: ");
-        Serial.println(settings->tempTarget);
+        Serial.println(settings.tempTarget);
         Serial.print("Sun Threshold: ");
-        Serial.println(settings->sunThreshold);
+        Serial.println(settings.sunThreshold);
         Serial.print("Water Level: ");
-        Serial.println(settings->waterLevelThreshold);
+        Serial.println(settings.waterLevelThreshold);
     } else {
         Serial.println("Failed to parse data");
     }
