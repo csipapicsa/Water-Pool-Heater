@@ -34,7 +34,7 @@ void loop() {
   sunLevel = getSolarvoltage(); 
   Serial.println(sunLevel);
   
-  if ((waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel > settings.sunThreshold)) {
+  if ((waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel < settings.sunThreshold)) {
     switchPump(0);
   } else {
     switchPump(1);
