@@ -3,7 +3,7 @@
 #include "PhotoSensor.h"
 #include "WaterPump.h"
 #include "Uart_eeprom_settings.h"
-#include "SolarPositionRTC.h"
+// #include "SolarPositionRTC.h"
 
 int delayTime = 500; 
 double waterLevel; 
@@ -15,7 +15,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   SetSettingsFromEeprom(settings); 
-  InitRTCSolarPosition();
+  // InitRTCSolarPosition();
   sensors.begin(); // what is this? 
   initWaterLevelSensor(); // init water level sensor 
 }
@@ -34,7 +34,7 @@ void loop() {
   sunLevel = getSolarvoltage(); 
   Serial.println(sunLevel);
   
-  if (waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel > settings.sunThreshold) {
+  if ((waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel > settings.sunThreshold)) {
     switchPump(0);
   } else {
     switchPump(1);
