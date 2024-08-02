@@ -24,7 +24,7 @@ void setup(void)
 void loop(void){ 
   // Call sensors.requestTemperatures() to issue a global temperature and Requests to all devices on the bus
   sensors.requestTemperatures(); 
-  Serial.print("Celsius temperature: ");
+  Serial.println("Celsius temperature: ");
   Serial.print(sensors.getTempCByIndex(0)); 
 
   delay(1000);

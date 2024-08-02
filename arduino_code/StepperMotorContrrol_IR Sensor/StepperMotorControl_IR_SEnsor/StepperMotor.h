@@ -1,18 +1,21 @@
+
+//StepperMotor.h
 #include <Stepper.h>
 
 
-// it should be in the global scope for some reasons
+
 const int step_pin = 10;
 const int dir_pin = 11;
-const int power_pin_stepper = A4;  // New pin for power control
+const int power_pin_stepper = A4;
 
 void stepperMove(String direction);
+void initStepperMotors();
 
 void initStepperMotors() {
   pinMode(step_pin, OUTPUT);
   pinMode(dir_pin, OUTPUT);
-  pinMode(power_pin_stepper, OUTPUT);  // Set A4 as output
-  digitalWrite(power_pin_stepper, LOW);  // Initially set to LOW (motor off)
+  pinMode(power_pin_stepper, OUTPUT); 
+  digitalWrite(power_pin_stepper, LOW);
 }
 
 void stepperMove(String direction) {
@@ -28,7 +31,7 @@ void stepperMove(String direction) {
     return; // Invalid direction
   }
 
-  for(int i = 0; i < 100; i++) { 
+  for(int i = 0; i < 800; i++) { 
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(step_pin, LOW);

@@ -12,32 +12,34 @@ void setup() {
 
 void loop() {
   // step one revolution  in one direction:
-  Serial.println("clockwise");
+  Serial.println("Down");
   digitalWrite(dir_pin, LOW);
   digitalWrite(step_pin, LOW);
 
-  for(int i = 0; i < 100; i++) { 
+  for(int i = 0; i < 50; i++) { 
     digitalWrite(step_pin, HIGH);
-    delayMicroseconds(20);
+    delayMicroseconds(10);
     digitalWrite(step_pin, LOW);
-    delay(20);
+    delay(8);
   }
-  delay(500);
+  delay(50);
   digitalWrite(dir_pin, HIGH);
 
-  for(int i = 0; i < 100; i++) { 
+  Serial.println("UP");
+
+  for(int i = 0; i < 200; i++) { 
     digitalWrite(step_pin, HIGH);
-    delayMicroseconds(20);
+    delayMicroseconds(10);
     //delay(1000);
     digitalWrite(step_pin, LOW);
-    delay(20);
+    delay(8);
     //delay(1000);
   }
 
-  delay(200);
+  delay(20);
 
   // step one revolution in the other direction:
-  Serial.println("counterclockwise");
+  
   delay(200);
 }
 
