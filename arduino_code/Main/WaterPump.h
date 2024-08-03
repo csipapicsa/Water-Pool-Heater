@@ -1,9 +1,9 @@
 #define waterPumpSwitchPin A3
 
-void setupWaterPump();
+void initWaterPump();
 void switchPump(int status);
 
-void setupWaterPump() {
+void initWaterPump() {
     pinMode(waterPumpSwitchPin, OUTPUT);
 }
 
