@@ -10,19 +10,37 @@ void setup() {
   Serial.begin(9600);
 }
 
+bool initWaterLevelSensorPositionStepper() {
+
+  Serial.print(getWaterLevelSensorPos("LOWER"));
+  Serial.print(getWaterLevelSensorPos("UPPER"));
+  if (getWaterLevelSensorPos("LOWER") and not getWaterLevelSensorPos("UPPER")) {
+    Serial.println("MOVE UP");
+    stepperMove("up", 1);
+    return 0;
+  }
+  else if (not getWaterLevelSensorPos("LOWER") and getWaterLevelSensorPos("UPPER")){ 
+    Serial.println("MOVE DOWN");
+    stepperMove("down", 1);
+    return 0;
+  }
+
+  else if (not getWaterLevelSensorPos("LOWER") and not getWaterLevelSensorPos("UPPER")) {
+    Serial.println("We can move forward");
+    return 1;
+  }
+}
+
+
 void loop() {
-  if (getWaterLevelSensorPos()) {
-    //stepperMove("up");
-    //stepperMove("up");
-    //stepperMove("up");
-    //stepperMove("up");
-    //stepperMove("up");
-    //stepperMove("up");
+
+  while (not initWaterLevelSensorPositionStepper()) {
+    Serial.println("Init stepper motor")
+    delay(1000);
   }
-  else {
-    stepperMove("down");
-  }
-  delay(1000);
+
+  
+    
 }
 
 

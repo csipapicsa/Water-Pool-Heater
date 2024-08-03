@@ -8,6 +8,7 @@ double getWaterLevel();
 int readSensor();
 
 int val = 0;
+int emptyThreshold = 100;
 int lowerThreshold = 500;
 int upperThreshold = 570;
 
@@ -26,8 +27,10 @@ int readSensor() {
 
 double getWaterLevel() {
     int level = readSensor();
+    Serial.println("Water Level: ");
+    Serial.println(level);
 
-    if (level == 0) {
+    if (level < emptyThreshold) {
         Serial.println("Water Level: Empty");
         return 0;
     } else if (level > 0 && level <= lowerThreshold) {
