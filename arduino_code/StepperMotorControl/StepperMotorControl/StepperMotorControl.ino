@@ -20,19 +20,19 @@ void loop() {
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(step_pin, LOW);
-    delay(8);
+    delay(10);
   }
   delay(50);
   digitalWrite(dir_pin, HIGH);
 
   Serial.println("UP");
 
-  for(int i = 0; i < 200; i++) { 
+  for(int i = 0; i < 50; i++) { 
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(10);
     //delay(1000);
     digitalWrite(step_pin, LOW);
-    delay(8);
+    delay(10);
     //delay(1000);
   }
 
