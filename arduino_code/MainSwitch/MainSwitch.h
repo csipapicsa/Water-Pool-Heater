@@ -1,5 +1,3 @@
- // The pin your switch is connected to
-
 const int switchPin = 2;
 
 void initMainSwitch() {
