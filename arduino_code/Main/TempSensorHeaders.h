@@ -12,13 +12,13 @@ double watertemp;
 
 // Function prototypes
 void initTempSensor();
-double getWaterTemperature();
+float getWaterTemperature();
 
 void initTempSensor() {
   sensors.begin();
 }
 
-double getWaterTemperature() {
+float getWaterTemperature() {
   sensors.requestTemperatures();
   watertemp = sensors.getTempCByIndex(0);
   Serial.println(watertemp);

@@ -4,7 +4,7 @@
 #define sensorPin A0
 
 void setupWaterLevelSensor();
-double getWaterLevel();
+int getWaterLevel();
 int readSensor();
 
 int val = 0;
@@ -25,7 +25,7 @@ int readSensor() {
     return val;                         // Send current reading
 }
 
-double getWaterLevel() {
+int getWaterLevel() {
     int level = readSensor();
     Serial.println("Water Level: ");
     Serial.println(level);
