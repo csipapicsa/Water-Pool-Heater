@@ -95,11 +95,10 @@ void loop() {
     }
     // when this point is reached it has changed from 0 to 1, meaning we should reposition and set the switchstate to 1
     
-    // place the waterlevel holder where it ought to be, so if it is in border regions move it into middle
     initWaterLevelSensorPosition();
     moveWaterLevelSensorDownToWater();
-    // reaching the minimum water level
-    switchState == newState; 
+
+    switchState = newState; 
   } 
 
   UpdateConfigFromSerial(settings); // checks for messages from user, and if received it will reset the settings.

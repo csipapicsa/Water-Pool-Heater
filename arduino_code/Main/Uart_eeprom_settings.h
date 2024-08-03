@@ -39,7 +39,7 @@ void SetSettingsFromEeprom(Settings& settings) {
   String eepromContents = "Current EEPROM contents:\n";
   String currentMessage = "";
   
-  for (int i = 0; i < EEPROM.length(); i++) {
+  for (unsigned int i = 0; i < EEPROM.length(); i++) {
     char c = EEPROM.read(i);
     if (c == '\0') {
       if (currentMessage.length() > 0) {
