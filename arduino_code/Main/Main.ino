@@ -4,6 +4,7 @@
 #include "WaterPump.h"
 #include "PositionSensor.h"
 #include "StepperMotor.h"
+#include "MainSwitch.h"
 //#include "Uart_eeprom_settings.h"
 // #include "SolarPositionRTC.h"
 
@@ -15,8 +16,8 @@ float sunLevel;
 
 void setup() {
   // put your setup code here, to run once:
-  //Serial.begin(9600);
-  //SetSettingsFromEeprom(settings); 
+  // Serial.begin(9600);
+  // SetSettingsFromEeprom(settings); 
   // InitRTCSolarPosition();
   sensors.begin(); // what is this? 
   initWaterLevelSensor(); // init water level sensor
@@ -30,51 +31,56 @@ void setup() {
 }
 
 bool initWaterLevelSensorPositionStepper() {
+  /*
+    Moves the waterlevel sensor up or down from the border regions
+   */
   Serial.println("SENSORS - LOW - UP");
-  Serial.println(getWaterLevelSensorPos("LOWER"));
-  Serial.println(getWaterLevelSensorPos("UPPER"));
-  if (getWaterLevelSensorPos("LOWER") and not getWaterLevelSensorPos("UPPER")) {
-    Serial.println("MOVE UP");
-    stepperMove("up", 1);
-    return 0;
-  }
-  else if (not getWaterLevelSensorPos("LOWER") and getWaterLevelSensorPos("UPPER")){ 
-    Serial.println("MOVE DOWN");
-    stepperMove("down", 1);
-    return 0;
-  }
+  Serial.println(getWaterLevelSensorPos(SensorPosition_Lower));
+  Serial.println(getWaterLevelSensorPos(SensorPosition_Upper));
 
-  else if (not getWaterLevelSensorPos("LOWER") and not getWaterLevelSensorPos("UPPER")) {
-    Serial.println("We can move forward");
-    return 1;
+  bool lower = getWaterLevelSensorPos(SensorPosition_Lower); 
+  bool upper = getWaterLevelSensorPos(SensorPosition_Upper); 
+
+  if (lower && !upper) {
+    Serial.println("MOVE UP");
+    stepperMove(StepDirection_Up, 1);
+    return 0;
+  } else if (!lower && upper) {
+    Serial.println("MOVE DOWN");
+    stepperMove(StepDirection_Down, 1);
+    return 0;
+  } else if (!lower && !upper) {
+    return 1; 
+  } else {
+    Serial.println("This should never happen! Both IR sensors sense something");
+    return 0; 
   }
 }
 
 void loop() {
-
-    while (not initWaterLevelSensorPositionStepper()) {
-    Serial.println("Init stepper motor");
-    delay(1000);
+  while(MainSwitchState() == 0) {
+    delay(1000); // do nothing
+  }
+    while (!initWaterLevelSensorPositionStepper()) {
+      Serial.println("Init stepper motor");
+      delay(1000);
     }
 
     // reaching the minimum water level
     while (getWaterLevel() == 0) {
-      if (not getWaterLevelSensorPos("LOWER") and not getWaterLevel() == 1) {
+      if (! getWaterLevelSensorPos(SensorPosition_Lower)) {
           Serial.println("Water level is low");
-          stepperMove("down", 1);
-      }
-      else {
+          stepperMove(StepDirection_Down, 1);
+      } else {
         Serial.println("Water level is low, add more water. We reached the limit of the sensor position");
         break;
       }
-      }
+    }
 
     // Start to add water
     Serial.println("Start to add water");
     delay(1000);
 
-
-  /*
   UpdateConfigFromSerial(settings);
   
   Serial.println("------");
@@ -95,5 +101,4 @@ void loop() {
   }
 
   delay(delayTime); 
-  */
 }
