@@ -27,23 +27,23 @@ int readSensor() {
 
 int getWaterLevel() {
     int level = readSensor();
-    Serial.println("Water Level: ");
-    Serial.println(level);
-
+    return level;  
+    /*
     if (level < emptyThreshold) {
-        Serial.println("Water Level: Empty");
+        // Serial.println("Water Level: Empty");
         return 0;
     } else if (level > 0 && level <= lowerThreshold) {
-        Serial.println("Water Level: Low");
+        // Serial.println("Water Level: Low");
         return 1;
     } else if (level > lowerThreshold && level <= upperThreshold) {
-        Serial.println("Water Level: Medium");
+        // Serial.println("Water Level: Medium");
         return 2;
     } else if (level > upperThreshold) {
-        Serial.println("Water Level: High");
+        // Serial.println("Water Level: High");
         return 3;
     }
     return -1; // In case none of the above conditions are met
+    */
 }
 
 int getWaterLevelRaw() {
