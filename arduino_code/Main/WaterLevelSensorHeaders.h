@@ -9,7 +9,7 @@ int readSensor();
 
 int val = 0;
 int emptyThreshold = 100;
-int lowerThreshold = 500;
+int lowerThreshold = 350;
 int upperThreshold = 570;
 
 void initWaterLevelSensor() {

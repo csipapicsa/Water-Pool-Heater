@@ -4,7 +4,7 @@
 
 // Value for storing water level
 int val = 0;
-int lowerThreshold = 500;
+int lowerThreshold = 382;
 int upperThreshold = 570;
 
 void setup() {
@@ -19,6 +19,8 @@ void setup() {
 
 void loop() {
 	int level = readSensor();
+	Serial.println("Water sensor RAW");
+	Serial.println(level);
 
 	if (level == 0) {
 		Serial.println("Water Level: Empty");
