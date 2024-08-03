@@ -81,7 +81,6 @@ void loop() {
     Serial.println("Start to add water");
     delay(1000);
 
-  /*
   UpdateConfigFromSerial(settings);
   
   Serial.println("------");
@@ -102,5 +101,4 @@ void loop() {
   }
 
   delay(delayTime); 
-  */
 }
