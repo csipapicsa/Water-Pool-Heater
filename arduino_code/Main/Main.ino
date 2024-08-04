@@ -13,10 +13,15 @@ int delayTime = 1000;
 double waterLevel; 
 double temp; 
 float sunLevel; 
-int newSwitchState;
 int waterLevelMin = 200; 
 struct Settings settings; 
 bool firstLoop; 
+
+void updateSensorValues() {
+      temp = getWaterTemperature();
+      waterLevel = getWaterLevel();
+      sunLevel = getSolarvoltage();
+}
 
 void printStatus() {
   Serial.print("Celsius temperature: ");
@@ -59,30 +64,21 @@ bool moveUpUntilOutOfWater() {
 
 
 void setup() {
-  // put your setup code here, to run once:
-  // Serial.begin(9600);
   // InitRTCSolarPosition();
-
-  newSwitchState = MainSwitchState();
-
   SetSettingsFromEeprom(settings); 
-
   initStepperMotors();
   initWaterLevelSensor(); // init water level sensor
   initMainSwitch();
   initWaterPump();
-
-
   sensors.begin(); // what is this? 
   // initialize the serial port:
   Serial.begin(9600);
 
-  // move sensor up
+/////////// move sensor up out of the water
 initpause: 
   while(1) {
     delay(100);
-    newSwitchState = MainSwitchState();
-    if(newSwitchState == 0) {
+    if(MainSwitchState() == 0) {
       goto initpause;
     }
     if(moveUpUntilOutOfWater() == 1) {
@@ -90,10 +86,9 @@ initpause:
       break;
     }
   }
-
+/////////// move sensor down just into the water
   while (getWaterLevel() < waterLevelMin) {
-    newSwitchState = MainSwitchState();
-    if(newSwitchState == 0) {
+    if(MainSwitchState() == 0) {
       goto initpause;
     }
     if (!getWaterLevelSensorPos(SensorPosition_Lower)) {
@@ -111,30 +106,18 @@ initpause:
 void loop() {
   UpdateConfigFromSerial(settings); // checks for messages from user, and if received it will reset the settings.
 
-  newSwitchState = MainSwitchState();
-
-  if(newSwitchState == 0) {
+  if(MainSwitchState() == 0) {
     switchPump(0);
-    while(newSwitchState == 0) {
+    while(MainSwitchState() == 0) {
       delay(1000); // do nothing
       Serial.println("PAUSED");
-
-      temp = getWaterTemperature();
-      waterLevel = getWaterLevel();
-      sunLevel = getSolarvoltage();
-
+      updateSensorValues();
       printStatus();
-      newSwitchState = MainSwitchState();
     }
   } 
     
-    // Now check sensors and see if they hit target conditions and then pump or not pump accordingly
   Serial.println("------");
-
-  temp = getWaterTemperature();
-  waterLevel = getWaterLevel();
-  sunLevel = getSolarvoltage();
-
+  updateSensorValues();
   printStatus();
 
     
