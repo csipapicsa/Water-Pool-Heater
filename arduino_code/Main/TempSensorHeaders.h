@@ -21,7 +21,7 @@ void initTempSensor() {
 float getWaterTemperature() {
   sensors.requestTemperatures();
   watertemp = sensors.getTempCByIndex(0);
-  Serial.println(watertemp);
+  // Serial.println(watertemp);
   return watertemp;
 }
 
