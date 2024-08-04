@@ -43,11 +43,16 @@ void printStatus() {
 bool moveUpUntilOutOfWater() {
   bool upper = getWaterLevelSensorPos(SensorPosition_Upper); 
 
-  if (!upper && getWaterLevel() < waterLevelMin) { // make sure this is good 
+  if(upper) {
+    Serial.println("CANNOT SET WATER LEVEL SENSOR HIGHER!");
+    return 1;
+  } else if(getWaterLevel() > waterLevelMin) {
     Serial.println("MOVE UP");
     stepperMove(StepDirection_Up, 1);
     return 0;
   }  else {
+    Serial.print("Water level is out of water at: ");
+    Serial.println(getWaterLevel());
     return 1; 
   }
 }
@@ -81,11 +86,12 @@ initpause:
       goto initpause;
     }
     if(moveUpUntilOutOfWater() == 1) {
+      Serial.println("MOVED SENSOR OUT OF WATER");
       break;
     }
   }
 
-  while (getWaterLevel() > waterLevelMin) {
+  while (getWaterLevel() < waterLevelMin) {
     newSwitchState = MainSwitchState();
     if(newSwitchState == 0) {
       goto initpause;
@@ -99,6 +105,7 @@ initpause:
     }
     delay(300); 
   }
+  Serial.println("MOVED SENSOR JUST INTO WATER");
 }
 
 void loop() {
