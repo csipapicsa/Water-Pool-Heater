@@ -28,7 +28,6 @@ void stepperMove(StepDirection direction, float revolutions) {
   //digitalWrite(power_pin_stepper, HIGH);
   switch(direction) {
     case StepDirection_Down:
-      Serial.println("Set to move down"); 
       digitalWrite(dir_pin, LOW);
       break;
     case StepDirection_Up: 
@@ -44,7 +43,6 @@ void stepperMove(StepDirection direction, float revolutions) {
     delayMicroseconds(10);
     digitalWrite(step_pin, LOW);
     delay(10);
-    Serial.println("Moved a step"); 
   }
 
   //digitalWrite(power_pin_stepper, LOW);

@@ -8,10 +8,10 @@ bool MainSwitchState() {
     int switchState = digitalRead(switchPin);
   
     if (switchState == LOW) {
-        Serial.println("Switch is pressed");
+        // Serial.println("Switch is pressed");
         return true;
     } else {
-        Serial.println("Switch is not pressed");
+        // Serial.println("Switch is not pressed");
         return false;
     }
     

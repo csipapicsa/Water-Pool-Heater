@@ -13,15 +13,37 @@ int delayTime = 1000;
 double waterLevel; 
 double temp; 
 float sunLevel; 
-int newSwitchState, oldSwitchState; 
+int newSwitchState;
 int waterLevelMin = 100; 
 struct Settings settings; 
 bool firstLoop; 
 
+void printStatus() {
+  Serial.print("Celsius temperature: ");
+  Serial.print(temp);
+  Serial.print(" (target ");
+  Serial.print(settings.tempTarget);
+  Serial.println(")");
+
+  Serial.print("Water level: ");
+  Serial.print(waterLevel);
+  Serial.print(" (target ");
+  Serial.print(settings.waterLevelThreshold);
+  Serial.println(")");
+
+  Serial.print("Photo Sensor Voltage: ");
+  Serial.print(sunLevel);
+  Serial.print(" (target ");
+  Serial.print(settings.sunThreshold);
+  Serial.println(")");
+
+  Serial.println(); 
+}
+
 bool moveUpUntilOutOfWater() {
   bool upper = getWaterLevelSensorPos(SensorPosition_Upper); 
 
-  if (!upper && getWaterLevel() > waterLevelMin) { // make sure this is good 
+  if (!upper && getWaterLevel() < waterLevelMin) { // make sure this is good 
     Serial.println("MOVE UP");
     stepperMove(StepDirection_Up, 1);
     return 0;
@@ -36,7 +58,6 @@ void setup() {
   // Serial.begin(9600);
   // InitRTCSolarPosition();
 
-  oldSwitchState = MainSwitchState();
   newSwitchState = MainSwitchState();
 
   SetSettingsFromEeprom(settings); 
@@ -51,7 +72,33 @@ void setup() {
   // initialize the serial port:
   Serial.begin(9600);
 
-  firstLoop = true; 
+  // move sensor up
+initpause: 
+  while(1) {
+    delay(100);
+    newSwitchState = MainSwitchState();
+    if(newSwitchState == 0) {
+      goto initpause;
+    }
+    if(moveUpUntilOutOfWater() == 1) {
+      break;
+    }
+  }
+
+  while (getWaterLevel() > waterLevelMin) {
+    newSwitchState = MainSwitchState();
+    if(newSwitchState == 0) {
+      goto initpause;
+    }
+    if (!getWaterLevelSensorPos(SensorPosition_Lower)) {
+      Serial.println("Water level is lower, so moving water level sensor down");
+      stepperMove(StepDirection_Down, 1);
+    } else {
+      Serial.println("Water level is low, add more water. We reached the limit of the sensor position");
+      break;
+    }
+    delay(300); 
+  }
 }
 
 void loop() {
@@ -59,73 +106,29 @@ void loop() {
 
   newSwitchState = MainSwitchState();
 
-  if(firstLoop) {
-    newSwitchState = 0; 
-    firstLoop = false; 
-  }
-
   if(newSwitchState == 0) {
-pause:
     switchPump(0);
     while(newSwitchState == 0) {
       delay(1000); // do nothing
-      newSwitchState = MainSwitchState();
-    }
-    // when this point is reached it has changed from 0 to 1, meaning we should reposition and set the switchstate to 1
-        
-    while(1) {
-      newSwitchState = MainSwitchState();
-      if(newSwitchState == 0) {
-        goto pause;
-      }
-      if(moveUpUntilOutOfWater() == 1) {
-        break;
-      }
-    }
+      Serial.println("PAUSED");
 
-    while (getWaterLevel() > waterLevelMin) {
-      newSwitchState = MainSwitchState();
-      if(newSwitchState == 0) {
-        goto pause;
-      }
-      if (!getWaterLevelSensorPos(SensorPosition_Lower)) {
-        Serial.println("Water level is lower, so moving water level sensor down");
-        stepperMove(StepDirection_Down, 1);
-      } else {
-        Serial.println("Water level is low, add more water. We reached the limit of the sensor position");
-        break;
-      }
-      delay(300); 
-    }
+      temp = getWaterTemperature();
+      waterLevel = getWaterLevel();
+      sunLevel = getSolarvoltage();
 
-    oldSwitchState = newSwitchState;
+      printStatus();
+      newSwitchState = MainSwitchState();
+    }
   } 
     
     // Now check sensors and see if they hit target conditions and then pump or not pump accordingly
   Serial.println("------");
 
   temp = getWaterTemperature();
-  Serial.print("Celsius temperature: ");
-  Serial.print(temp);
-  Serial.print(" (target ");
-  Serial.print(settings.tempTarget);
-  Serial.println(")");
-
   waterLevel = getWaterLevel();
-  Serial.print("Water level: ");
-  Serial.print(waterLevel);
-  Serial.print(" (target ");
-  Serial.print(settings.waterLevelThreshold);
-  Serial.println(")");
-
   sunLevel = getSolarvoltage();
-  Serial.print("Photo Sensor Voltage: ");
-  Serial.print(sunLevel);
-  Serial.print(" (target ");
-  Serial.print(settings.sunThreshold);
-  Serial.println(")");
 
-  Serial.println(); 
+  printStatus();
 
     
   if ((waterLevel > settings.waterLevelThreshold) || (temp > settings.tempTarget) || (sunLevel < settings.sunThreshold)) {
