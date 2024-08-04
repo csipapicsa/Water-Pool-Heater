@@ -25,26 +25,26 @@ void initStepperMotors() {
 }
 
 void stepperMove(StepDirection direction, float revolutions) {
-  Serial.println(" * Move is pinged");
-  Serial.println(direction);
   //digitalWrite(power_pin_stepper, HIGH);
   switch(direction) {
     case StepDirection_Down:
+      Serial.println("Set to move down"); 
       digitalWrite(dir_pin, LOW);
-      //return; 
+      break;
     case StepDirection_Up: 
       digitalWrite(dir_pin, HIGH);
-      //return; 
+      break;
+    default: 
+      break; // Invalid direction, should handle this case more proper like return -1 and caller should handle
   }
 
   int steps = 200 * revolutions;
-  Serial.println(" REVOLUTION STEPS ");
-  Serial.println(steps);
   for(int i = 0; i <= steps; i++) { 
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(step_pin, LOW);
     delay(10);
+    //Serial.println("Moved a step"); 
   }
 
   //digitalWrite(power_pin_stepper, LOW);
