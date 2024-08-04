@@ -14,7 +14,7 @@ double waterLevel;
 double temp; 
 float sunLevel; 
 int newSwitchState;
-int waterLevelMin = 100; 
+int waterLevelMin = 200; 
 struct Settings settings; 
 bool firstLoop; 
 
