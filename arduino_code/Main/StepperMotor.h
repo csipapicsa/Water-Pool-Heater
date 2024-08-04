@@ -13,7 +13,7 @@ const int step_pin = 10;
 const int dir_pin = 11;
 //const int power_pin_stepper = A4;
 
-void stepperMove(StepDirection direction, int revolutions);
+void stepperMove(StepDirection direction, float revolutions);
 void initStepperMotors();
 
 
@@ -24,7 +24,7 @@ void initStepperMotors() {
   //digitalWrite(power_pin_stepper, LOW);
 }
 
-void stepperMove(StepDirection direction, int revolutions) {
+void stepperMove(StepDirection direction, float revolutions) {
   //digitalWrite(power_pin_stepper, HIGH);
   switch(direction) {
     case StepDirection_Down:

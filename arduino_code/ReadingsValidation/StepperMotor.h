@@ -1,39 +1,51 @@
+
+//StepperMotor.h
 #include <Stepper.h>
 
+enum StepDirection {
+  StepDirection_Down, 
+  StepDirection_Up,
 
-// it should be in the global scope for some reasons
+  StepDirection_Count
+};
+
 const int step_pin = 10;
 const int dir_pin = 11;
-const int power_pin_stepper = A4;  // New pin for power control
+//const int power_pin_stepper = A4;
 
-void stepperMove(String direction);
+void stepperMove(StepDirection direction, float revolutions);
+void initStepperMotors();
+
 
 void initStepperMotors() {
   pinMode(step_pin, OUTPUT);
   pinMode(dir_pin, OUTPUT);
-  pinMode(power_pin_stepper, OUTPUT);  // Set A4 as output
-  digitalWrite(power_pin_stepper, LOW);  // Initially set to LOW (motor off)
+  //pinMode(power_pin_stepper, OUTPUT); 
+  //digitalWrite(power_pin_stepper, LOW);
 }
 
-void stepperMove(String direction) {
-  digitalWrite(power_pin_stepper, HIGH);
-  if (direction == "down") {
-    digitalWrite(dir_pin, LOW);
-  }
-  else if (direction == "up") {
-    digitalWrite(dir_pin, HIGH);
-  }
-  else {
-    digitalWrite(power_pin_stepper, LOW);
-    return; // Invalid direction
+void stepperMove(StepDirection direction, float revolutions) {
+  Serial.println(" * Move is pinged");
+  Serial.println(direction);
+  //digitalWrite(power_pin_stepper, HIGH);
+  switch(direction) {
+    case StepDirection_Down:
+      digitalWrite(dir_pin, LOW);
+      //return; 
+    case StepDirection_Up: 
+      digitalWrite(dir_pin, HIGH);
+      //return; 
   }
 
-  for(int i = 0; i < 100; i++) { 
+  int steps = 200 * revolutions;
+  Serial.println(" REVOLUTION STEPS ");
+  Serial.println(steps);
+  for(int i = 0; i <= steps; i++) { 
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(step_pin, LOW);
     delay(10);
   }
 
-  digitalWrite(power_pin_stepper, LOW);
+  //digitalWrite(power_pin_stepper, LOW);
 }

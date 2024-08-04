@@ -1,10 +1,18 @@
-const int switchPin = 8;  // Use any available digital pin
-
+const int switchPin = 2;
 
 void initMainSwitch() {
-  pinMode(switchPin, INPUT);
+    pinMode(switchPin, INPUT_PULLUP);  // Enable internal pull-up resistor
 }
 
-bool isMainSwitchOn() {
-  return digitalRead(switchPin) == HIGH;
+bool MainSwitchState() {
+    int switchState = digitalRead(switchPin);
+  
+    if (switchState == LOW) {
+        Serial.println("Switch is pressed");
+        return true;
+    } else {
+        Serial.println("Switch is not pressed");
+        return false;
+    }
+    
 }
