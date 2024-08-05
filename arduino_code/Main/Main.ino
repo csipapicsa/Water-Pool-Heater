@@ -6,8 +6,6 @@
 #include "StepperMotor.h"
 #include "MainSwitch.h"
 #include "Uart_eeprom_settings.h"
-// #include "SolarPositionRTC.h"
-
 
 int delayTime = 1000; 
 double waterLevel; 
@@ -18,9 +16,9 @@ struct Settings settings;
 bool firstLoop; 
 
 void updateSensorValues() {
-      temp = getWaterTemperature();
-      waterLevel = getWaterLevel();
-      sunLevel = getSolarvoltage();
+  temp = getWaterTemperature();
+  waterLevel = getWaterLevel();
+  sunLevel = getSolarvoltage();
 }
 
 void printStatus() {
@@ -64,7 +62,6 @@ bool moveUpUntilOutOfWater() {
 
 
 void setup() {
-  // InitRTCSolarPosition();
   SetSettingsFromEeprom(settings); 
   initStepperMotors();
   initWaterLevelSensor(); // init water level sensor

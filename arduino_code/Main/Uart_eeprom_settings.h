@@ -36,75 +36,45 @@ static bool data_decoder(const String& datastring, Settings& settings) {
 }
 
 void SetSettingsFromEeprom(Settings& settings) {
-  String eepromContents = "Current EEPROM contents:\n";
   String currentMessage = "";
   
   for (unsigned int i = 0; i < EEPROM.length(); i++) {
     char c = EEPROM.read(i);
+    currentMessage += c;
     if (c == '\0') {
-      if (currentMessage.length() > 0) {
-        eepromContents += currentMessage + "\n";
-        if (data_decoder(currentMessage, settings)) {
-          Serial.println("Decoded settings:");
-          Serial.print("Temp Target: ");
-          Serial.println(settings.tempTarget);
-          Serial.print("Sun Threshold: ");
-          Serial.println(settings.sunThreshold);
-          Serial.print("Water Level: ");
-          Serial.println(settings.waterLevelThreshold);
-        } else {
-          Serial.println("Couldn't decode: " + currentMessage);
-        }
-        currentMessage = "";
-      }
-      break;  // Stop reading after the first null character
-    } else {
-      currentMessage += c;
+      break;
     }
   }
   
   if (currentMessage.length() > 0) {
-    eepromContents += currentMessage + "\n";
-    if (data_decoder(currentMessage, settings)) {
-      Serial.println("Decoded settings:");
-      Serial.print("Temp Target: ");
-      Serial.println(settings.tempTarget);
-      Serial.print("Sun Threshold: ");
-      Serial.println(settings.sunThreshold);
-      Serial.print("Water Level: ");
-      Serial.println(settings.waterLevelThreshold);
-    } else {
+    if (!data_decoder(currentMessage, settings)) {
       Serial.println("Couldn't decode: " + currentMessage);
+      settings.tempTarget = 25;
+      settings.sunThreshold = 2; 
+      settings.waterLevelThreshold = 400;
     }
   } else {
-    Serial.println("Length of message received is 0 (SetSettingsFromEeprom())"); 
+    Serial.println("Nothing stored in EEPROM!"); 
+    // default settings if nothing is stored in EEPROM
+    settings.tempTarget = 25;
+    settings.sunThreshold = 2; 
+    settings.waterLevelThreshold = 400;
   }
-  
-  eepromContents += "\nReady to receive new messages. Type and press enter to store in EEPROM.";
-  Serial.println(eepromContents);
 }
 
 void UpdateConfigFromSerial(Settings& settings) {
   if (Serial.available()) {
     int bytesRead = Serial.readBytesUntil('\n', message, MAX_MESSAGE_LENGTH - 1);
     message[bytesRead] = '\0';
-    
-    for (int i = 0; i < bytesRead + 1; i++) {
-      EEPROM.update(address + i, message[i]);
-    }
-    
-    Serial.print("Stored message: ");
-    Serial.println(message);
 
     if (data_decoder(message, settings)) {
-        Serial.print("Temp Target: ");
-        Serial.println(settings.tempTarget);
-        Serial.print("Sun Threshold: ");
-        Serial.println(settings.sunThreshold);
-        Serial.print("Water Level: ");
-        Serial.println(settings.waterLevelThreshold);
+      for (int i = 0; i < bytesRead + 1; i++) {
+        EEPROM.update(address + i, message[i]);
+        Serial.print("Stored message: ");
+        Serial.println(message);
+      }
     } else {
-        Serial.println("Failed to parse data");
+      Serial.println("Failed to parse data");
     }
     
     address = 0; 
