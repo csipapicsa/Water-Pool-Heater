@@ -25,6 +25,18 @@ static bool data_decoder(const String& datastring, Settings& settings) {
   settings.tempTarget = tempTargetStr.toInt();
   settings.sunThreshold = sunThresholdStr.toFloat();
   settings.waterLevelThreshold = waterLevelStr.toInt();
+
+  if(settings.waterLevelThreshold > 500) {
+    settings.waterLevelThreshold = 500; 
+  } else if(settings.waterLevelThreshold < 20) {
+    settings.waterLevelThreshold = 20; 
+  }
+
+  if(settings.tempTarget < 1) {
+    settings.tempTarget = 1;  
+  } else if(settings.tempTarget > 95) {
+    settings.tempTarget = 95; 
+  }
   
   if (settings.tempTarget < 0 || settings.tempTarget > 100 || 
       isnan(settings.sunThreshold) || 
