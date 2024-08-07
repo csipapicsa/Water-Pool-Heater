@@ -28,8 +28,8 @@ static bool data_decoder(const String& datastring, Settings& settings) {
 
   if(settings.waterLevelThreshold > 500) {
     settings.waterLevelThreshold = 500; 
-  } else if(settings.waterLevelThreshold < 20) {
-    settings.waterLevelThreshold = 20; 
+  } else if(settings.waterLevelThreshold < 200) {
+    settings.waterLevelThreshold = 200; 
   }
 
   if(settings.tempTarget < 1) {

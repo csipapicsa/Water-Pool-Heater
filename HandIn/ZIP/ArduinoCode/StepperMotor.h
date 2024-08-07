@@ -11,7 +11,6 @@ enum StepDirection {
 
 const int step_pin = 10;
 const int dir_pin = 11;
-//const int power_pin_stepper = A4;
 
 void stepperMove(StepDirection direction, float revolutions);
 void initStepperMotors();
@@ -20,12 +19,9 @@ void initStepperMotors();
 void initStepperMotors() {
   pinMode(step_pin, OUTPUT);
   pinMode(dir_pin, OUTPUT);
-  //pinMode(power_pin_stepper, OUTPUT); 
-  //digitalWrite(power_pin_stepper, LOW);
 }
 
 void stepperMove(StepDirection direction, float revolutions) {
-  //digitalWrite(power_pin_stepper, HIGH);
   switch(direction) {
     case StepDirection_Down:
       digitalWrite(dir_pin, LOW);
@@ -44,6 +40,4 @@ void stepperMove(StepDirection direction, float revolutions) {
     digitalWrite(step_pin, LOW);
     delay(10);
   }
-
-  //digitalWrite(power_pin_stepper, LOW);
 }
