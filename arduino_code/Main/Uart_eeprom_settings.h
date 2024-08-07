@@ -26,8 +26,8 @@ static bool data_decoder(const String& datastring, Settings& settings) {
   settings.sunThreshold = sunThresholdStr.toFloat();
   settings.waterLevelThreshold = waterLevelStr.toInt();
 
-  if(settings.waterLevelThreshold > 599) {
-    settings.waterLevelThreshold = 599; 
+  if(settings.waterLevelThreshold > 500) {
+    settings.waterLevelThreshold = 500; 
   } else if(settings.waterLevelThreshold < 20) {
     settings.waterLevelThreshold = 20; 
   }
